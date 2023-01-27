@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.seastory.product.dao.LicenseMapper">
+    <select id="selectLicense" resultType="LicenseDto">
+        SELECT
+            L.LICENSE_CODE
+             , L.LICENSE_NAME
+             , L.LICENSE_PRICE
+             , L.LICENSE_DESCRIPTION
+             , L.LICENSE_ORDERABLE
+             , C.CATEGORY_CODE
+             , C.CATEGORY_NAME
+             , L.LICENSE_IMAGE_URL
+        FROM TBL_LICENSE L
+                 JOIN TBL_CATEGORY C
+                      ON (L.CATEGORY_CODE = C.CATEGORY_CODE)
+        WHERE LICENSE_CODE = #{licenseCode}
+          AND LICENSE_ORDERABLE = 'Y'
+        ORDER BY LICENSE_CODE DESC
+    </select>
+
+    <select id="selectLicenseForAdmin" resultType="LicenseDto">
+        SELECT
+            L.LICENSE_CODE
+             , L.LICENSE_NAME
+             , L.LICENSE_PRICE
+             , L.LICENSE_DESCRIPTION
+             , L.LICENSE_ORDERABLE
+             , C.CATEGORY_CODE
+             , C.CATEGORY_NAME
+             , L.LICENSE_IMAGE_URL
+        FROM TBL_LICENSE L
+                 JOIN TBL_CATEGORY C
+                      ON (L.CATEGORY_CODE = C.CATEGORY_CODE)
+        WHERE LICENSE_CODE = #{licenseCode}
+        ORDER BY LICENSE_CODE DESC
+    </select>
+
+    <select id="selectLicenseTotal" resultType="int">
+        SELECT
+            count(*)
+        FROM TBL_LICENSE L
+        JOIN TBL_CATEGORY C
+             ON (L.CATEGORY_CODE = C.CATEGORY_CODE)
+        WHERE LICENSE_ORDERABLE = 'Y'
+    </select>
+
+    <select id="selectLicenseTotalForAdmin" resultType="int">
+        SELECT
+            count(*)
+        FROM TBL_LICENSE L
+                 JOIN TBL_CATEGORY C
+                      ON (L.CATEGORY_CODE = C.CATEGORY_CODE)
+    </select>
+
+    <select id="selectLicenseListWithPagingForAdmin" parameterType="LicenseDto" resultType="LicenseDto">
+        <![CDATA[
+
+        SELECT
+            LICENSE_CODE
+             , LICENSE_NAME
+             , LICENSE_PRICE
+             , LICENSE_DESCRIPTION
+             , LICENSE_ORDERABLE
+             , CATEGORY_CODE
+             , CATEGORY_NAME
+             , LICENSE_IMAGE_URL
+        FROM(
+                SELECT
+                    ROWNUM AS RN
+                     , L.LICENSE_CODE
+                     , L.LICENSE_NAME
+                     , L.LICENSE_PRICE
+                     , L.LICENSE_DESCRIPTION
+                     , L.LICENSE_ORDERABLE
+                     , L.CATEGORY_CODE
+                     , L.CATEGORY_NAME
+                     , L.LICENSE_IMAGE_URL
+                FROM (
+                         SELECT
+                             TL.LICENSE_CODE
+                              , TL.LICENSE_NAME
+                              , TL.LICENSE_PRICE
+                              , TL.LICENSE_DESCRIPTION
+                              , TL.LICENSE_ORDERABLE
+                              , TC.CATEGORY_CODE
+                              , TC.CATEGORY_NAME
+                              , TL.LICENSE_IMAGE_URL
+                         FROM TBL_LICENSE TL
+                                  JOIN TBL_CATEGORY TC ON (TL.CATEGORY_CODE = TC.CATEGORY_CODE)
+                         ORDER BY TL.LICENSE_CODE DESC
+                     ) L
+
+            )
+        WHERE RN <= #{ endRow }
+          AND RN >= #{ startRow }
+
+        ]]>
+    </select>
+
+    <select id="selectLicenseListWithPaging" parameterType="LicenseDto" resultType="LicenseDto">
+        <![CDATA[
+
+        SELECT
+            LICENSE_CODE
+             , LICENSE_NAME
+             , LICENSE_PRICE
+             , LICENSE_DESCRIPTION
+             , LICENSE_ORDERABLE
+             , CATEGORY_CODE
+             , CATEGORY_NAME
+             , LICENSE_IMAGE_URL
+        FROM(
+                SELECT
+                    ROWNUM AS RN
+                     , L.LICENSE_CODE
+                     , L.LICENSE_NAME
+                     , L.LICENSE_PRICE
+                     , L.LICENSE_DESCRIPTION
+                     , L.LICENSE_ORDERABLE
+                     , L.CATEGORY_CODE
+                     , L.CATEGORY_NAME
+                     , L.LICENSE_IMAGE_URL
+                FROM (
+                         SELECT
+                             TL.LICENSE_CODE
+                              , TL.LICENSE_NAME
+                              , TL.LICENSE_PRICE
+                              , TL.LICENSE_DESCRIPTION
+                              , TL.LICENSE_ORDERABLE
+                              , TC.CATEGORY_CODE
+                              , TC.CATEGORY_NAME
+                              , TL.LICENSE_IMAGE_URL
+                         FROM TBL_LICENSE TL
+                                  JOIN TBL_CATEGORY TC ON (TL.CATEGORY_CODE = TC.CATEGORY_CODE)
+                         WHERE LICENSE_ORDERABLE = 'Y'
+                         ORDER BY TL.LICENSE_CODE DESC
+                     ) L
+
+            )
+        WHERE RN <= #{ endRow }
+          AND RN >= #{ startRow }
+
+        ]]>
+    </select>
+
+    <insert id="insertLicense" parameterType="LicenseDto">
+        INSERT INTO TBL_LICENSE
+            (
+             LICENSE_CODE,
+             LICENSE_NAME,
+             LICENSE_PRICE,
+             LICENSE_DESCRIPTION,
+             LICENSE_ORDERABLE,
+             CATEGORY_CODE,
+             LICENSE_IMAGE_URL
+                 )
+        VALUES
+            (
+             SEQ_LICENSE_CODE.NEXTVAL,
+             #{licenseName},
+             #{licensePrice},
+             #{licenseDescription},
+             #{licenseOrderable},
+             #{categoryCode},
+             #{licenseImageUrl}
+            )
+    </insert>
+
+    <update id="updateLicense" parameterType="LicenseDto">
+        UPDATE TBL_LICENSE
+        SET
+            LICENSE_NAME = #{licenseName},
+            LICENSE_PRICE = #{licensePrice},
+            LICENSE_DESCRIPTION = #{licenseDescription},
+            LICENSE_ORDERABLE = #{licenseOrderable},
+            CATEGORY_CODE = #{categoryCode},
+            LICENSE_IMAGE_URL = #{licenseImageUrl}
+        WHERE
+            LICENSE_CODE = #{licenseCode}
+    </update>
+
+    <delete id="deleteLicense" parameterType="String">
+        DELETE FROM TBL_LICENSE
+         WHERE LICENSE_CODE = #{ licenseCode }
+    </delete>
+
+</mapper>
