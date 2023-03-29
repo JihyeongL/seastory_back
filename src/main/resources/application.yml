@@ -6,7 +6,9 @@ spring:
     driver-class-name: oracle.jdbc.OracleDriver
     #url: jdbc:oracle:thin:@43.200.33.166:1522/xe
     #url: jdbc:oracle:thin:@192.168.0.24:1522/xe
-    url: jdbc:oracle:thin:@localhost:1521/xe
+#    url: jdbc:oracle:thin:@192.168.0.161:1522/xe
+    url: jdbc:oracle:thin:@192.168.0.161:1521/xe
+
     username: SEASTORY
     password: SEASTORY
   servlet:
@@ -33,7 +35,7 @@ image:
   image-dir: /licenseimgs/
   #image-url: http://43.200.33.166:8090/productimgs/
   #image-url: http://192.168.0.24:8090/productimgs/
-  image-url: http://localhost:8999/licenseimgs/
+  image-url: http://192.168.0.161:8999/licenseimgs/
 
 # HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용
 # Secret 값은 특정 문자열을 Base64 로 인코딩한 값 사용
@@ -52,5 +54,3 @@ mybatis:
 logging:
   level:
     root: info
-
-

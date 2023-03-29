@@ -26,4 +26,6 @@ public interface LicenseMapper {
     int updateLicense(LicenseDto licenseDto);
 
     int deleteLicense(String licenseCode);
+
+    List<LicenseDto> selectLicenseList();
 }

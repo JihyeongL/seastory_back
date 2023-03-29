@@ -1,14 +1,18 @@
 package com.jl.seastory.member.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Data
+@Getter
+@Setter
 public class MemberDto implements UserDetails {
 
     private int memberCode;

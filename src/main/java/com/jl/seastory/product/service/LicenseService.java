@@ -115,4 +115,12 @@ public class LicenseService {
 
         return (result > 0) ? "상품 삭제 성공":"상품 삭제 실패";
     }
+
+    public Object selectLicenseList() {
+        List<LicenseDto> licenseList = licenseMapper.selectLicenseList();
+        for (int i = 0; i < licenseList.size(); i++) {
+            licenseList.get(i).setLicenseImageUrl(IMAGE_URL + licenseList.get(i).getLicenseImageUrl());
+        }
+        return licenseList;
+    }
 }

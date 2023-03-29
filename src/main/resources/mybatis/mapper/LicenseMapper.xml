@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jl.seastory.product.dao.LicenseMapper">
+
     <select id="selectLicense" resultType="LicenseDto">
         SELECT
             L.LICENSE_CODE
@@ -152,9 +153,9 @@
              LICENSE_CODE,
              LICENSE_NAME,
              LICENSE_PRICE,
-             LICENSE_DESCRIPTION,
              LICENSE_ORDERABLE,
              CATEGORY_CODE,
+             LICENSE_DESCRIPTION,
              LICENSE_IMAGE_URL
                  )
         VALUES
@@ -162,9 +163,9 @@
              SEQ_LICENSE_CODE.NEXTVAL,
              #{licenseName},
              #{licensePrice},
-             #{licenseDescription},
              #{licenseOrderable},
              #{categoryCode},
+             #{licenseDescription},
              #{licenseImageUrl}
             )
     </insert>
@@ -187,4 +188,21 @@
          WHERE LICENSE_CODE = #{ licenseCode }
     </delete>
 
+    <select id="selectLicenseList" resultType="LicenseDto">
+        SELECT
+            L.LICENSE_CODE
+             , L.LICENSE_NAME
+             , L.LICENSE_PRICE
+             , L.LICENSE_DESCRIPTION
+             , L.LICENSE_ORDERABLE
+             , C.CATEGORY_CODE
+             , C.CATEGORY_NAME
+             , L.LICENSE_IMAGE_URL
+        FROM TBL_LICENSE L
+                 JOIN TBL_CATEGORY C
+                      ON (L.CATEGORY_CODE = C.CATEGORY_CODE)
+        WHERE C.CATEGORY_CODE = '1'
+          AND L.LICENSE_ORDERABLE = 'Y'
+        ORDER BY LICENSE_CODE DESC
+    </select>
 </mapper>

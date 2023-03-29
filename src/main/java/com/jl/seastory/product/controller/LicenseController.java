@@ -23,8 +23,8 @@ public class LicenseController {
     public ResponseEntity<ResponseDto> selectProductListWithPaging(@RequestParam(name="offset", defaultValue="1") String offset) {
 
         int totalCount = licenseService.selectLicenseTotal();
-        int limit = 6;
-        int buttonAmount = 6;
+        int limit = 3;
+        int buttonAmount = 3;
         SelectCriteria selectCriteria = Pagenation.getSelectCriteria(Integer.parseInt(offset), totalCount, limit, buttonAmount);
 
         ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
@@ -76,5 +76,11 @@ public class LicenseController {
     @DeleteMapping("/licenses-management/{licenseCode}")
     public ResponseEntity<ResponseDto> deleteLicense(@PathVariable String licenseCode){
         return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "상품 삭제 완료", licenseService.deleteLicense(licenseCode)));
+    }
+
+    @GetMapping("/products/licenses")
+    public ResponseEntity<ResponseDto> selectLicenseList() {
+
+        return ResponseEntity.ok().body(new ResponseDto(HttpStatus.OK, "조회 성공",  licenseService.selectLicenseList()));
     }
 }

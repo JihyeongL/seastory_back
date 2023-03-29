@@ -75,6 +75,7 @@
         UPDATE TBL_MEMBER A
         SET
             A.MEMBER_NAME = #{memberName},
+            A.MEMBER_PASSWORD = #{memberPassword},
             A.MEMBER_EMAIL = #{memberEmail}
         WHERE A.MEMBER_ID = #{memberId}
     </update>

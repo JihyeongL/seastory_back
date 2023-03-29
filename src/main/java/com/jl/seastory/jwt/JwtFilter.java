@@ -50,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
     }
 
-    private String convertObjectToJson(Object object) throws JsonProcessingException {
+    private String convertObjectToJson(Object object) throws IOException {
         if(object == null){
             return null;
         }
